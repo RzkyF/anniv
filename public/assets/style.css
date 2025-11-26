@@ -1,0 +1,69 @@
+ @layer base {
+            body {
+                font-family: 'Epilogue', sans-serif;
+            }
+            .font-serif-display {
+                font-family: 'Playfair Display', serif;
+            }
+        }
+        @layer utilities {
+            .film-strip {
+                background-color: #333;
+                background-image:
+                    repeating-linear-gradient(0deg, transparent, transparent 1rem, #444 1rem, #444 2rem),
+                    repeating-linear-gradient(90deg, #333, #333 1rem, #fff 1rem, #fff 1.25rem, #333 1.25rem);
+                background-size: 100% 2.25rem, 3.25rem 100%;
+                background-position: top, left;
+                background-repeat: repeat-y, repeat-x;
+            }
+            .dark .film-strip {
+                background-color: #1a1a1a;
+                 background-image:
+                    repeating-linear-gradient(0deg, transparent, transparent 1rem, #2b2b2b 1rem, #2b2b2b 2rem),
+                    repeating-linear-gradient(90deg, #1a1a1a, #1a1a1a 1rem, #d8c2c0 1rem, #d8c2c0 1.25rem, #1a1a1a 1.25rem);
+            }
+            .film-perforations {
+                --perforation-color-light: #F9F6F2;
+                --perforation-color-dark: #221016;
+                --perforation-color: var(--perforation-color-light);
+                background-image: repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 0.5rem,
+                    var(--perforation-color) 0.5rem,
+                    var(--perforation-color) 1.5rem,
+                    transparent 1.5rem,
+                    transparent 2rem
+                );
+                background-size: 100% 2.5rem;
+            }
+            .dark .film-perforations {
+                --perforation-color: var(--perforation-color-dark);
+            }
+            .love-shape {
+                position: relative;
+                width: 120px;
+                height: 108px;
+                filter: drop-shadow(0 0 10px rgba(183, 110, 121, 0.5));
+            }
+            .love-shape::before,
+            .love-shape::after {
+                content: '';
+                position: absolute;
+                left: 60px;
+                top: 0;
+                width: 60px;
+                height: 96px;
+                background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 40%), #B76E79;
+                border-radius: 60px 60px 0 0;
+                transform-origin: 0 100%;
+            }
+            .love-shape::before {
+                transform: rotate(-45deg);
+            }
+            .love-shape::after {
+                left: 0;
+                transform: rotate(45deg);
+                transform-origin: 100% 100%;
+            }
+        }
