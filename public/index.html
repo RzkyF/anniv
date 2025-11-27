@@ -14,6 +14,181 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <link rel="stylesheet" href="./assets/style.css" />
   <script id="tailwind-config" src="./js/config.js"></script>
+
+  <style>
+    :root {
+      --marquee-speed-px-per-sec: 300;
+    }
+
+    .marquee-container {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    .marquee-content {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      white-space: nowrap;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .marquee-content > * {
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    .marquee-content img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+
+    .video-thumb {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+      z-index: 20;
+    }
+
+    .video-thumb .center-play {
+      width: 72px;
+      height: 72px;
+      border-radius: 9999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-size: 36px;
+      border: 2px solid rgba(255,255,255,0.08);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      cursor: pointer;
+    }
+
+    .video-controls {
+      transition: opacity .18s;
+      z-index: 10;
+    }
+
+    .video-wrap { 
+      position: relative; 
+      width:100%; 
+      height:100%; 
+    }
+
+    .control-range { 
+      -webkit-appearance: none; 
+      appearance: none;
+      height: 4px; 
+      background: rgba(255,255,255,0.25); 
+      border-radius: 999px; 
+      width: 100%;
+      cursor: pointer;
+    }
+    
+    .control-range::-webkit-slider-thumb { 
+      -webkit-appearance: none; 
+      width: 12px; 
+      height: 12px; 
+      background: white; 
+      border-radius: 50%; 
+      box-shadow: 0 0 2px rgba(0,0,0,.4); 
+      cursor: pointer;
+    }
+    
+    .control-range::-moz-range-thumb {
+      width: 12px; 
+      height: 12px; 
+      background: white; 
+      border-radius: 50%; 
+      box-shadow: 0 0 2px rgba(0,0,0,.4);
+      border: none;
+      cursor: pointer;
+    }
+
+    /* volume slider container - collapsible */
+    .volume-slider-wrapper {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      height: auto;
+      min-width: 36px;
+      transition: min-width 0.3s ease;
+    }
+
+    .volume-slider-wrapper.active {
+      min-width: 36px;
+    }
+
+    /* vertical slider track */
+    .volume-track {
+      width: 4px;
+      height: 50px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 999px;
+      position: relative;
+      order: 1;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .volume-slider-wrapper.active .volume-track {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* custom slider dengan manual drag */
+    .volume-slider-custom {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 2px rgba(0,0,0,.4);
+      cursor: grab;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 5;
+    }
+
+    .volume-slider-wrapper.active .volume-slider-custom {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .volume-slider-custom:active {
+      cursor: grabbing;
+    }
+
+    /* hidden input range */
+    .volume-slider-vertical {
+      display: none;
+    }
+
+    .volume-btn-container {
+      order: 2;
+    }
+  </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark">
@@ -30,133 +205,481 @@
         <div class="absolute bottom-[-10px] right-[-30px] love-shape scale-75 rotate-[-30deg]"></div>
       </div>
     </div>
+
     <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 z-10">
       <div class="text-center mb-8 sm:mb-12">
         <h1 class="font-serif-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary tracking-tight">NiKi One
           Year Anniversary</h1>
         <p class="mt-4 text-lg text-text-light dark:text-text-dark">A special poem, just for you.</p>
       </div>
+
       <div class="w-full px-4 mb-12">
         <div class="relative flex items-center justify-center bg-gray-500/20 bg-cover bg-center aspect-video rounded-lg shadow-xl overflow-hidden">
-          <video id="videoPlayer" class="w-full h-full object-cover rounded-lg" style="display:none;">
-            <source src="./assets/video/test.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-          <div id="videoThumbnail" class="w-full h-full bg-cover bg-center rounded-lg flex items-center justify-center"
-            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G");'>
-            <button id="playBtn"
-              class="flex shrink-0 items-center justify-center rounded-full size-16 sm:size-20 bg-black/40 text-white transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background-dark z-20">
-              <span class="material-symbols-outlined text-4xl sm:text-5xl">play_arrow</span>
-            </button>
-          </div>
-          <div class="absolute inset-x-0 bottom-0 px-4 py-3 bg-gradient-to-t from-black/50 to-transparent">
-            <div class="flex h-4 items-center justify-center gap-1">
-              <div class="h-1 flex-1 rounded-full bg-white/80"></div>
-              <div class="relative">
-                <div class="absolute -left-2 -top-2 size-4 rounded-full bg-white shadow"></div>
+          <div id="videoWrap" class="video-wrap w-full h-full">
+            <!-- video element - hidden initially until play -->
+            <video id="videoPlayer" class="w-full h-full object-cover rounded-lg" preload="metadata" playsinline style="display:none;">
+              <source src="./assets/video/test.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+
+            <!-- centered thumbnail + play button (visible on first access) -->
+            <div id="videoThumbnail" class="video-thumb" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G");'>
+              <button id="centerPlayBtn" class="center-play" aria-label="Play video">
+                <span class="material-symbols-outlined">play_arrow</span>
+              </button>
+            </div>
+
+            <!-- bottom overlay controls -->
+            <div id="bottomControls" class="absolute inset-x-0 bottom-0 px-4 py-3 bg-gradient-to-t from-black/60 to-transparent video-controls" style="display:none;">
+              <div class="flex items-center gap-3">
+                <button id="ctrlPlay" class="flex items-center justify-center w-10 h-10 rounded-full bg-black/40 text-white focus:outline-none hover:bg-black/60 transition">
+                  <span id="ctrlIcon" class="material-symbols-outlined">play_arrow</span>
+                </button>
+
+                <!-- volume controls with vertical slider -->
+                <div class="volume-slider-wrapper" id="volumeWrapper">
+                  <div class="volume-track" id="volumeTrack">
+                    <div class="volume-slider-custom" id="volumeThumb"></div>
+                  </div>
+                  <input id="volumeSlider" class="volume-slider-vertical" type="range" min="0" max="100" value="100" aria-label="Volume">
+                  <div class="volume-btn-container">
+                    <button id="muteBtn" class="flex items-center justify-center w-9 h-9 rounded bg-black/30 text-white hover:bg-black/50 transition">
+                      <span id="muteIcon" class="material-symbols-outlined">volume_up</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div id="progressBar" class="relative h-2 w-full bg-white/20 rounded cursor-pointer group">
+                  <div id="progressFilled" class="absolute left-0 top-0 h-full bg-white rounded" style="width:0%"></div>
+                </div>
+
+                <div class="ml-3 text-white text-xs whitespace-nowrap">
+                  <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+                </div>
+
+                <!-- fullscreen -->
+                <button id="btnFullscreen" class="ml-2 flex items-center justify-center w-9 h-9 rounded bg-black/30 text-white hover:bg-black/50 transition">
+                  <span id="fsIcon" class="material-symbols-outlined">fullscreen</span>
+                </button>
               </div>
-              <div class="h-1 flex-1 rounded-full bg-white/40"></div>
             </div>
-            <div class="flex items-center justify-between mt-1">
-              <p class="text-white text-xs font-medium leading-normal tracking-[0.015em]" id="currentTime">0:00</p>
-              <p class="text-white text-xs font-medium leading-normal tracking-[0.015em]" id="duration">0:00</p>
-            </div>
+
           </div>
         </div>
       </div>
+
       <div class="w-full px-4 mb-12">
-        <p
-          class="font-serif-display text-text-light dark:text-text-dark text-lg sm:text-xl font-normal leading-relaxed text-center sm:text-left">
+        <p class="font-serif-display text-text-light dark:text-text-dark text-lg sm:text-xl font-normal leading-relaxed text-center sm:text-left">
           To the one who fills my days with laughter and my heart with love, this past year has been the most beautiful
           chapter of my life. Every moment with you is a cherished memory, a testament to the incredible journey we've
           embarked on together. This is for you, a small token of my immense love.
         </p>
       </div>
+
       <div class="w-full mb-12">
-        <div class="marquee-container">
-          <div class="marquee-content">
+        <div class="marquee-container overflow-hidden">
+          <div class="marquee-content flex flex-row">
             <!-- First set -->
             <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
               <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
               <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple laughing on a park bench"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
+              <img alt="Couple laughing on a park bench" class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuALHTymtsKgUWOF05CAaJNKHgVWg5ZloJW8Wkp7kdoKC-fXnwAL-Oz9gVppocQRUncKj228HPa6Dm5cLYR9ApD4iwXnlKCbNX0vRwUEdNgYVBIoBxx623jHOSOdTxHNBHL5VH-aMTFZt7oSmBCiS3FP-FdSnW72l-xb9g458lhYWQ9bnVYt1l-RpguON6rE09uMHrMbZ83apmVnFvTQFgnkqtWXKaXqKmfNnN02RUZUxNR4XhldmWyxOdEmD8My8dHlxdAyTp9_xtBE" />
             </div>
             <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
               <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
               <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple sharing an ice cream"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
+              <img alt="Couple sharing an ice cream" class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G" />
             </div>
             <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
               <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
               <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple holding hands at sunset"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
+              <img alt="Couple holding hands at sunset" class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRTFpoYKV-V6vSBz2u-WLJWU1eioPBhAsuCCmlV0xxI-l0eIYsm0m071gwm4e4cVWZhqx5JGLqFsIFg7MQe1oP2-6nPlnFEYprPwb01TrsSzeaXZDtTWNl_q8CGQRbOCX_cyNr860en5EFDYgYvptec7-Z8LFKUvyhf4phqAs5As6Lphq7vACGv-yJMQaOJntRnhVDSg6Ypl7qAvi07vszK249-NWgrvDkzsSa-aX9VcHx2ElMAUekEjmxcNwoe-LDLwr83UGcMbni" />
             </div>
             <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
               <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
               <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple posing with a funny face"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
+              <img alt="Couple posing with a funny face" class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAInIHNRrmiYraU_y8K9-jBAyy6ooyrKD4zkqQFxK229wg28xMrCGRZIYwdJIrQVojtO-1rCNOW8MQFZ6kXZeWpNIevMB2mVx4Ppeq7IYNEvCCIhHxzVEHg9bCk95ABODseTaAdbMxoWYeGUkcMv6CXeLP93sguR3Df_ISIlLYVSX1mUQIq0Jk2SFAjFx-n478q6DxnS6i79V93wFH1hcGykLK76Nuae5urgIYQdH9o1_Hi8ws_YrlBdvdJD_WNU0_VH6kfqD-H9taQ" />
             </div>
             <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
               <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
               <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple on a vacation by the sea"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtxKPyOv4IRGQUBq_RyO_JX4qhhlsW4MiJVsOI69RjhFOVv_g2P1dXQ0nyzkO0D67AwujGycfhKWSw3oW50zGjoCPig2HdzO8kbgaL4uyIVQGMBnHySr814lSmkQKOB-fyH1gJI7KoSinW9fBw8ixLZ4KROuhFgzxkWutTCiAnD6j3-SeA0RkYPeDbp-zknm6ZhdTZiNMvyT7bB_NClHLwXC2qcvkgH1aPdwYTlO-RvQZAYMlbx6RKnfVyT0f9c2UR7VGnum1n4bVH" />
-            </div>
-
-            <!-- Second set (duplicate for seamless loop) -->
-            <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
-              <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
-              <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple laughing on a park bench"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuALHTymtsKgUWOF05CAaJNKHgVWg5ZloJW8Wkp7kdoKC-fXnwAL-Oz9gVppocQRUncKj228HPa6Dm5cLYR9ApD4iwXnlKCbNX0vRwUEdNgYVBIoBxx623jHOSOdTxHNBHL5VH-aMTFZt7oSmBCiS3FP-FdSnW72l-xb9g458lhYWQ9bnVYt1l-RpguON6rE09uMHrMbZ83apmVnFvTQFgnkqtWXKaXqKmfNnN02RUZUxNR4XhldmWyxOdEmD8My8dHlxdAyTp9_xtBE" />
-            </div>
-            <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
-              <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
-              <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple sharing an ice cream"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G" />
-            </div>
-            <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
-              <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
-              <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple holding hands at sunset"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRTFpoYKV-V6vSBz2u-WLJWU1eioPBhAsuCCmlV0xxI-l0eIYsm0m071gwm4e4cVWZhqx5JGLqFsIFg7MQe1oP2-6nPlnFEYprPwb01TrsSzeaXZDtTWNl_q8CGQRbOCX_cyNr860en5EFDYgYvptec7-Z8LFKUvyhf4phqAs5As6Lphq7vACGv-yJMQaOJntRnhVDSg6Ypl7qAvi07vszK249-NWgrvDkzsSa-aX9VcHx2ElMAUekEjmxcNwoe-LDLwr83UGcMbni" />
-            </div>
-            <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
-              <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
-              <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple posing with a funny face"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAInIHNRrmiYraU_y8K9-jBAyy6ooyrKD4zkqQFxK229wg28xMrCGRZIYwdJIrQVojtO-1rCNOW8MQFZ6kXZeWpNIevMB2mVx4Ppeq7IYNEvCCIhHxzVEHg9bCk95ABODseTaAdbMxoWYeGUkcMv6CXeLP93sguR3Df_ISIlLYVSX1mUQIq0Jk2SFAjFx-n478q6DxnS6i79V93wFH1hcGykLK76Nuae5urgIYQdH9o1_Hi8ws_YrlBdvdJD_WNU0_VH6kfqD-H9taQ" />
-            </div>
-            <div class="relative flex-shrink-0 w-64 h-64 sm:w-80 sm:h-80 bg-black/50 p-2.5">
-              <div class="film-perforations absolute inset-y-0 left-0 w-2.5"></div>
-              <div class="film-perforations absolute inset-y-0 right-0 w-2.5"></div>
-              <img alt="Couple on a vacation by the sea"
-                class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
+              <img alt="Couple on a vacation by the sea" class="w-full h-full object-cover sepia-[.3] contrast-125 brightness-90 saturate-110"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtxKPyOv4IRGQUBq_RyO_JX4qhhlsW4MiJVsOI69RjhFOVv_g2P1dXQ0nyzkO0D67AwujGycfhKWSw3oW50zGjoCPig2HdzO8kbgaL4uyIVQGMBnHySr814lSmkQKOB-fyH1gJI7KoSinW9fBw8ixLZ4KROuhFgzxkWutTCiAnD6j3-SeA0RkYPeDbp-zknm6ZhdTZiNMvyT7bB_NClHLwXC2qcvkgH1aPdwYTlO-RvQZAYMlbx6RKnfVyT0f9c2UR7VGnum1n4bVH" />
             </div>
           </div>
         </div>
       </div>
+
       <footer class="flex flex-col gap-6 px-5 py-10 text-center border-t border-primary/20">
-        <p class="text-primary/80 dark:text-primary/70 text-base font-normal leading-normal">With All My Love, 
+        <p class="text-primary/80 dark:text-primary/70 text-base font-normal leading-normal">With All My Love,
           Rizki | Desember, 1st 2025</p>
       </footer>
     </div>
   </div>
+
+  <script>
+    // ---------- VIDEO: local file /video/test.mp4 with centered play on first access + fullscreen & volume ----------
+    (function () {
+      const videoPlayer = document.getElementById('videoPlayer');
+      const centerPlayBtn = document.getElementById('centerPlayBtn');
+      const videoThumbnail = document.getElementById('videoThumbnail');
+      const bottomControls = document.getElementById('bottomControls');
+      const ctrlPlay = document.getElementById('ctrlPlay');
+      const ctrlIcon = document.getElementById('ctrlIcon');
+      const progressBar = document.getElementById('progressBar');
+      const progressFilled = document.getElementById('progressFilled');
+      const currentTimeEl = document.getElementById('currentTime');
+      const durationEl = document.getElementById('duration');
+
+      const muteBtn = document.getElementById('muteBtn');
+      const muteIcon = document.getElementById('muteIcon');
+      const volumeSlider = document.getElementById('volumeSlider');
+      const volumeWrapper = document.getElementById('volumeWrapper');
+      const volumeTrack = document.getElementById('volumeTrack');
+      const volumeThumb = document.getElementById('volumeThumb');
+
+      const btnFullscreen = document.getElementById('btnFullscreen');
+      const fsIcon = document.getElementById('fsIcon');
+      const videoWrap = document.getElementById('videoWrap');
+
+      let volumeHideTimeout = null;
+      let lastVolume = 1;
+      let volumeDragging = false;
+
+      function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60) || 0;
+        const secs = Math.floor(seconds % 60) || 0;
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+      }
+
+      // Start playback: show video, hide thumbnail, show bottom controls
+      function startPlayback() {
+        videoThumbnail.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        bottomControls.style.display = 'block';
+        videoPlayer.play().catch(() => {
+          // autoplay may be blocked — show controls anyway
+        });
+      }
+
+      // Center play button click
+      centerPlayBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        startPlayback();
+      });
+
+      // Bottom control play/pause
+      ctrlPlay.addEventListener('click', () => {
+        if (videoPlayer.paused) {
+          videoPlayer.play();
+        } else {
+          videoPlayer.pause();
+        }
+      });
+
+      // update control icon
+      videoPlayer.addEventListener('play', () => { ctrlIcon.textContent = 'pause'; });
+      videoPlayer.addEventListener('pause', () => { ctrlIcon.textContent = 'play_arrow'; });
+
+      // metadata loaded -> set duration and initial volume UI
+      videoPlayer.addEventListener('loadedmetadata', () => {
+        durationEl.textContent = formatTime(videoPlayer.duration || 0);
+        const vol = videoPlayer.volume;
+        volumeSlider.value = vol * 100;
+        lastVolume = vol;
+        updateVolumeThumbPosition();
+        updateMuteIcon();
+      });
+
+      // update time/progress frequently
+      videoPlayer.addEventListener('timeupdate', () => {
+        const cur = videoPlayer.currentTime || 0;
+        const dur = videoPlayer.duration || 0;
+        currentTimeEl.textContent = formatTime(cur);
+        const pct = dur ? (cur / dur) * 100 : 0;
+        progressFilled.style.width = pct + '%';
+      });
+
+      // clicking progress seeks
+      progressBar.addEventListener('click', (ev) => {
+        const rect = progressBar.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        const dur = videoPlayer.duration || 0;
+        videoPlayer.currentTime = dur * pct;
+      });
+
+      // pointer drag for smoother seeking
+      let dragging = false;
+      progressBar.addEventListener('pointerdown', (ev) => {
+        dragging = true;
+        progressBar.setPointerCapture(ev.pointerId);
+      });
+      progressBar.addEventListener('pointermove', (ev) => {
+        if (!dragging) return;
+        const rect = progressBar.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        progressFilled.style.width = (pct * 100) + '%';
+        currentTimeEl.textContent = formatTime((videoPlayer.duration || 0) * pct);
+      });
+      progressBar.addEventListener('pointerup', (ev) => {
+        if (!dragging) return;
+        dragging = false;
+        const rect = progressBar.getBoundingClientRect();
+        const pct = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        videoPlayer.currentTime = (videoPlayer.duration || 0) * pct;
+        progressBar.releasePointerCapture(ev.pointerId);
+      });
+
+      // clicking on thumbnail background also starts
+      videoThumbnail.addEventListener('click', () => startPlayback());
+
+      // VOLUME controls
+      function updateMuteIcon() {
+        if (videoPlayer.volume === 0) {
+          muteIcon.textContent = 'volume_mute';
+        } else if (videoPlayer.volume < 0.5) {
+          muteIcon.textContent = 'volume_down';
+        } else {
+          muteIcon.textContent = 'volume_up';
+        }
+      }
+
+      function updateVolumeThumbPosition() {
+        const vol = parseFloat(volumeSlider.value) / 100;
+        const trackHeight = volumeTrack.offsetHeight;
+        // Position from bottom (0% = bottom, 100% = top)
+        const topPos = trackHeight * (1 - vol);
+        volumeThumb.style.top = topPos + 'px';
+      }
+
+      function scheduleVolumeHide() {
+        clearTimeout(volumeHideTimeout);
+        volumeHideTimeout = setTimeout(() => {
+          volumeWrapper.classList.remove('active');
+        }, 3000);
+      }
+
+      // mute/unmute toggle - HANYA KLIK TOMBOL VOLUME
+      muteBtn.addEventListener('click', () => {
+        if (videoPlayer.volume === 0) {
+          // unmute - restore ke volume sebelumnya
+          const restore = lastVolume > 0 ? lastVolume : 0.5;
+          videoPlayer.volume = restore;
+          volumeSlider.value = restore * 100;
+        } else {
+          // mute - simpan volume saat ini sebelum set ke 0
+          lastVolume = videoPlayer.volume;
+          videoPlayer.volume = 0;
+          volumeSlider.value = 0;
+        }
+        updateVolumeThumbPosition();
+        updateMuteIcon();
+      });
+
+      // volume slider - show/hide on mute button hover
+      muteBtn.addEventListener('mouseenter', () => {
+        clearTimeout(volumeHideTimeout);
+        volumeWrapper.classList.add('active');
+      });
+
+      muteBtn.addEventListener('mouseleave', () => {
+        if (!volumeDragging) {
+          scheduleVolumeHide();
+        }
+      });
+
+      // volume wrapper - keep visible while hovering
+      volumeWrapper.addEventListener('mouseenter', () => {
+        clearTimeout(volumeHideTimeout);
+      });
+
+      volumeWrapper.addEventListener('mouseleave', () => {
+        if (!volumeDragging) {
+          scheduleVolumeHide();
+        }
+      });
+
+      // volume thumb - drag to adjust
+      volumeThumb.addEventListener('pointerdown', (ev) => {
+        volumeDragging = true;
+        clearTimeout(volumeHideTimeout);
+        volumeThumb.setPointerCapture(ev.pointerId);
+      });
+
+      document.addEventListener('pointermove', (ev) => {
+        if (!volumeDragging) return;
+        
+        const trackRect = volumeTrack.getBoundingClientRect();
+        const y = ev.clientY - trackRect.top;
+        const trackHeight = trackRect.height;
+        
+        // Constrain y to be within track bounds
+        const constrainedY = Math.max(0, Math.min(trackHeight, y));
+        
+        // Calculate volume: 0% at bottom, 100% at top
+        const vol = Math.max(0, Math.min(1, (trackHeight - constrainedY) / trackHeight));
+        
+        videoPlayer.volume = vol;
+        volumeSlider.value = vol * 100;
+        
+        // Update thumb position
+        volumeThumb.style.top = constrainedY + 'px';
+        
+        if (vol > 0) {
+          lastVolume = vol;
+        }
+        updateMuteIcon();
+      });
+
+      document.addEventListener('pointerup', (ev) => {
+        if (!volumeDragging) return;
+        volumeDragging = false;
+        volumeThumb.releasePointerCapture(ev.pointerId);
+        scheduleVolumeHide();
+      });
+
+      // track click to set volume
+      volumeTrack.addEventListener('click', (ev) => {
+        const trackRect = volumeTrack.getBoundingClientRect();
+        const y = ev.clientY - trackRect.top;
+        const trackHeight = trackRect.height;
+        
+        const constrainedY = Math.max(0, Math.min(trackHeight, y));
+        const vol = Math.max(0, Math.min(1, (trackHeight - constrainedY) / trackHeight));
+        
+        videoPlayer.volume = vol;
+        volumeSlider.value = vol * 100;
+        volumeThumb.style.top = constrainedY + 'px';
+        
+        if (vol > 0) {
+          lastVolume = vol;
+        }
+        updateMuteIcon();
+      });
+
+      // volume slider input (hidden, untuk sync)
+      volumeSlider.addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value) / 100;
+        videoPlayer.volume = v;
+        if (v > 0) {
+          lastVolume = v;
+        }
+        updateVolumeThumbPosition();
+        updateMuteIcon();
+      });
+
+      // FULLSCREEN
+      function isFullscreen() {
+        return document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+      }
+
+      function enterFullscreen(el) {
+        if (el.requestFullscreen) return el.requestFullscreen();
+        if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+        if (el.mozRequestFullScreen) return el.mozRequestFullScreen();
+        if (el.msRequestFullscreen) return el.msRequestFullscreen();
+      }
+
+      function exitFullscreen() {
+        if (document.exitFullscreen) return document.exitFullscreen();
+        if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+        if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+        if (document.msExitFullscreen) return document.msExitFullscreen();
+      }
+
+      btnFullscreen.addEventListener('click', () => {
+        if (isFullscreen()) {
+          exitFullscreen();
+        } else {
+          enterFullscreen(videoWrap || document.documentElement);
+        }
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        fsIcon.textContent = isFullscreen() ? 'fullscreen_exit' : 'fullscreen';
+      });
+      document.addEventListener('webkitfullscreenchange', () => {
+        fsIcon.textContent = isFullscreen() ? 'fullscreen_exit' : 'fullscreen';
+      });
+      document.addEventListener('mozfullscreenchange', () => {
+        fsIcon.textContent = isFullscreen() ? 'fullscreen_exit' : 'fullscreen';
+      });
+
+      // make sure bottom controls show when playback starts
+      videoPlayer.addEventListener('play', () => {
+        bottomControls.style.display = 'block';
+      });
+
+      // if video ends, show thumbnail + reset
+      videoPlayer.addEventListener('ended', () => {
+        videoPlayer.style.display = 'none';
+        videoThumbnail.style.display = 'flex';
+        bottomControls.style.display = 'none';
+        videoPlayer.currentTime = 0;
+      });
+
+    })();
+  </script>
+
+  <script>
+    // ---------- MARQUEE: requestAnimationFrame driven for smoothness ----------
+    (function () {
+      const container = document.querySelector('.marquee-container');
+      const content = container.querySelector('.marquee-content');
+
+      function imagesLoaded(el) {
+        const imgs = Array.from(el.querySelectorAll('img'));
+        return Promise.all(imgs.map(img => {
+          if (img.complete) return Promise.resolve();
+          return new Promise(r => img.addEventListener('load', r, { once: true }));
+        }));
+      }
+
+      imagesLoaded(content).then(initMarquee).catch(initMarquee);
+
+      function initMarquee() {
+        const containerW = container.clientWidth || window.innerWidth;
+        let safety = 0;
+        while (content.scrollWidth < containerW * 2 && safety < 50) {
+          content.appendChild(content.children[safety % content.children.length].cloneNode(true));
+          safety++;
+        }
+
+        const singleWidth = Math.max(1, content.scrollWidth / 2);
+        let pos = 0;
+        let last = performance.now();
+
+        const defaultSpeed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--marquee-speed-px-per-sec')) || 300;
+        let speedPxPerSec = defaultSpeed;
+
+        function loop(now) {
+          const dt = Math.min(0.05, (now - last) / 1000);
+          last = now;
+
+          pos += speedPxPerSec * dt;
+          if (pos >= singleWidth) pos -= singleWidth;
+
+          content.style.transform = `translate3d(${-Math.round(pos)}px,0,0)`;
+
+          requestAnimationFrame(loop);
+        }
+
+        let resizeTimer = null;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            location.reload();
+          }, 200);
+        });
+
+        requestAnimationFrame(loop);
+      }
+    })();
+  </script>
 </body>
 
 </html>
