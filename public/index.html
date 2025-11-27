@@ -741,7 +741,7 @@
   </script>
 
   <script>
-    // ---------- MARQUEE: Seamless infinite scroll ----------
+    // ---------- MARQUEE: Seamless infinite scroll dengan triple duplication ----------
     (function () {
       const container = document.getElementById('marqueeContainer');
       const contentEl = document.getElementById('marqueeContent');
@@ -775,7 +775,7 @@
         frame.innerHTML = `
           <div class="film-perforation left"></div>
           <div class="film-perforation right"></div>
-          <img alt="${img.alt}" src="${img.src}" />
+          <img alt="${img.alt}" src="${img.src}" loading="lazy" />
         `;
         return frame;
       }
@@ -792,32 +792,31 @@
       let lastTime = performance.now();
       let pos = 0;
       let singleWidth = 0;
+      let totalGap = 0;
       const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--marquee-speed-px-per-sec')) || 280;
 
       function buildInfiniteScroll() {
-        // clear
         contentEl.innerHTML = '';
-
-        // build original sequence
         const itemCount = images.length;
-        images.forEach(img => {
-          contentEl.appendChild(buildFrame(img));
-        });
-
-        // duplicate sequence once for seamless scroll
-        images.forEach(img => {
-          contentEl.appendChild(buildFrame(img));
-        });
+        
+        // Triple duplication untuk seamless looping
+        for (let rep = 0; rep < 3; rep++) {
+          images.forEach(img => {
+            contentEl.appendChild(buildFrame(img));
+          });
+        }
 
         return imagesLoaded(contentEl).then(() => {
-          // measure width of one sequence
           singleWidth = 0;
+          totalGap = 0;
+          
+          // Hitung width satu sequence
           for (let i = 0; i < itemCount; i++) {
             const child = contentEl.children[i];
-            singleWidth += child.offsetWidth + 12; // 12px gap
+            singleWidth += child.offsetWidth;
+            if (i < itemCount - 1) totalGap += 12;
           }
-          // subtract last gap
-          singleWidth -= 12;
+          singleWidth += totalGap;
           
           if (!singleWidth) singleWidth = container.clientWidth;
           pos = 0;
@@ -826,14 +825,14 @@
       }
 
       function animate(now) {
-        const dt = Math.min(0.05, (now - lastTime) / 1000);
+        const dt = Math.min(0.016, (now - lastTime) / 1000);
         lastTime = now;
 
         pos += speed * dt;
         
-        // seamless wrap: when pos exceeds singleWidth, jump back to 0
+        // Seamless wrap dengan tolerance
         if (pos >= singleWidth) {
-          pos = 0;
+          pos = pos - singleWidth;
         }
 
         contentEl.style.transform = `translate3d(${-pos}px,0,0)`;
