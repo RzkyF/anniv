@@ -69,3 +69,20 @@
         }
 
       
+        @keyframes scrollMarquee {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+    .marquee-container {
+      overflow: hidden;
+      width: 100%;
+    }
+    .marquee-content {
+      display: flex;
+      animation: scrollMarquee 120s linear infinite;
+      width: 200%;
+    }
