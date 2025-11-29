@@ -1,986 +1,349 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NiKi One Year Anniversary</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/style.css" />
+    <script id="tailwind-config" src="./js/config.js"></script>
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>NiKi One Year Anniversary</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap"
-    rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/style.css" />
-  <script id="tailwind-config" src="./js/config.js"></script>
+    <style></style>
+  </head>
 
-  <style>
-    :root {
-      --marquee-speed-px-per-sec: 280;
-    }
-
-    .marquee-container {
-      overflow: hidden;
-      width: 100%;
-      position: relative;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .marquee-content {
-      display: flex;
-      gap: 0;
-      align-items: center;
-      white-space: nowrap;
-      will-change: transform;
-      transform: translate3d(0,0,0);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      transition: none;
-    }
-
-    .marquee-content > * {
-      flex-shrink: 0;
-      display: inline-block;
-      margin: 0;
-    }
-
-    .marquee-content img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-    }
-
-    .film-frame {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      overflow: visible;
-      padding: 0 2rem;
-      box-sizing: content-box;
-    }
-
-    .film-frame + .film-frame::before {
-      content: "";
-      position: absolute;
-      left: -6px;
-      top: 6%;
-      bottom: 6%;
-      width: 6px;
-      z-index: 6;
-      border-radius: 3px;
-      pointer-events: none;
-      background:
-        linear-gradient(90deg, rgba(0,0,0,0.45), rgba(60,60,60,0.12)),
-        repeating-radial-gradient(circle at 50% 0, rgba(0,0,0,0.7) 0 2px, transparent 4px);
-      background-blend-mode: overlay;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-    }
-
-    .marquee-frame {
-      position: relative;
-      flex-shrink: 0;
-      width: 16rem;
-      height: 16rem;
-      background: rgba(0,0,0,0.45);
-      padding: 0.625rem;
-      box-sizing: border-box;
-      border-radius: 8px;
-      overflow: hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      isolation: isolate;
-      z-index: 3;
-      border: 4px solid rgba(10,10,10,0.35);
-    }
-
-    @media (min-width:640px){
-      .marquee-frame { width:20rem; height:20rem; }
-    }
-
-    .film-perforation {
-      position: absolute;
-      top: 6%;
-      bottom: 6%;
-      width: 34px;
-      pointer-events: none;
-      display:block;
-      opacity: .16;
-      mix-blend-mode: overlay;
-      background-image:
-        radial-gradient(circle at 50% 0%, rgba(255,255,255,0.15) 0 6px, transparent 6px),
-        radial-gradient(circle at 50% 10px, rgba(255,255,255,0.12) 0 6px, transparent 6px);
-      background-size: 100% 18px;
-      background-repeat: repeat-y;
-      z-index: 5;
-    }
-    .film-perforation.left { left: 0; border-top-left-radius:8px; border-bottom-left-radius:8px; }
-    .film-perforation.right { right: 0; border-top-right-radius:8px; border-bottom-right-radius:8px; }
-
-    .marquee-frame::before{
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 8px;
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.18);
-      pointer-events: none;
-      z-index: 6;
-    }
-
-    .marquee-frame img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: sepia(.3) contrast(1.25) brightness(.92) saturate(1.08);
-      display:block;
-      border-radius: 4px;
-    }
-
-    .film-edge {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 14%;
-      pointer-events: none;
-      z-index: 7;
-      background:
-        repeating-linear-gradient(
-          to right,
-          rgba(0,0,0,0.12) 0 10px,
-          rgba(255,255,255,0.02) 10px 20px
-        ),
-        linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.03));
-      mix-blend-mode: multiply;
-      border-radius: 6px;
-      opacity: .95;
-    }
-    .film-edge.top { top: 0; transform: translateY(-2%); }
-    .film-edge.bottom { bottom: 0; transform: translateY(2%); }
-
-    .film-edge::after{
-      content: "";
-      position: absolute;
-      left: 8px;
-      right: 8px;
-      top: 50%;
-      height: 10px;
-      transform: translateY(-50%);
-      background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0 3px, transparent 3px);
-      background-size: 22px 10px;
-      background-repeat: repeat-x;
-      opacity: .85;
-      mix-blend-mode: overlay;
-      pointer-events: none;
-    }
-
-    .film-roll {
-      position: absolute;
-      top: -12%;
-      bottom: -12%;
-      width: 56px;
-      pointer-events: none;
-      z-index: 2;
-      border-radius: 6px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.32);
-      overflow: visible;
-      background:
-        linear-gradient(90deg, #111 0%, #333 40%, #222 100%);
-      opacity: .98;
-    }
-
-    .film-roll::before {
-      content: "";
-      position: absolute;
-      left: 6px;
-      right: 6px;
-      top: 6px;
-      bottom: 6px;
-      border-radius: 4px;
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.06), rgba(255,255,255,0.02));
-      mix-blend-mode: overlay;
-      pointer-events: none;
-    }
-
-    .film-roll::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 8px;
-      bottom: 8px;
-      width: 12px;
-      background-image:
-        radial-gradient(circle, rgba(0,0,0,0.65) 0 3px, transparent 4px);
-      background-size: 22px 22px;
-      background-repeat: repeat-y;
-      box-shadow: inset 0 0 6px rgba(255,255,255,0.02);
-      pointer-events: none;
-      opacity: 0.75;
-    }
-
-    .film-roll.left { left: -36px; transform-origin: center; transform: rotate(-1.5deg); }
-    .film-roll.right { right: -36px; transform-origin: center; transform: rotate(1.5deg); }
-
-    .marquee-content,
-    .marquee-content * {
-      -webkit-transform: translate3d(0,0,0);
-      transform: translate3d(0,0,0);
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-
-    .video-thumb {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-size: cover;
-      background-position: center;
-      z-index: 20;
-    }
-
-    .video-thumb .center-play {
-      width: 72px;
-      height: 72px;
-      border-radius: 9999px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      font-size: 36px;
-      border: 2px solid rgba(255,255,255,0.08);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-      cursor: pointer;
-    }
-
-    .video-controls {
-      transition: opacity .18s, transform .18s;
-      z-index: 10;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(6px);
-    }
-    .video-controls.visible {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateY(0);
-    }
-
-    .video-wrap { 
-      position: relative; 
-      width:100%; 
-      height:100%; 
-      touch-action: manipulation;
-    }
-
-    video#videoPlayer.object-cover { object-fit: cover; }
-    video#videoPlayer.object-contain { object-fit: contain; }
-
-    .control-range { 
-      -webkit-appearance: none; 
-      appearance: none;
-      height: 4px; 
-      background: rgba(255,255,255,0.25); 
-      border-radius: 999px; 
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .control-range::-webkit-slider-thumb { 
-      -webkit-appearance: none; 
-      width: 12px; 
-      height: 12px; 
-      background: white; 
-      border-radius: 50%; 
-      box-shadow: 0 0 2px rgba(0,0,0,.4); 
-      cursor: pointer;
-    }
-
-    .control-range::-moz-range-thumb {
-      width: 12px; 
-      height: 12px; 
-      background: white; 
-      border-radius: 50%; 
-      box-shadow: 0 0 2px rgba(0,0,0,.4);
-      border: none;
-      cursor: pointer;
-    }
-
-    .volume-slider-wrapper {
-      position: relative;
-      display: inline-flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      height: 40px;
-    }
-
-    .volume-track {
-      width: 4px;
-      height: 50px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 999px;
-      position: absolute;
-      opacity: 0;
-      transition: opacity 0.18s ease;
-      pointer-events: none;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 45px;
-    }
-
-    .volume-slider-wrapper.active .volume-track {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .volume-slider-custom {
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 2px rgba(0,0,0,.4);
-      cursor: grab;
-      opacity: 0;
-      transition: opacity 0.18s ease;
-      pointer-events: none;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 5;
-    }
-
-    .volume-slider-wrapper.active .volume-slider-custom {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .volume-slider-custom:active { cursor: grabbing; }
-    .volume-slider-vertical { display: none; }
-
-    .fs-fallback {
-      position: fixed !important;
-      inset: 0 !important;
-      width: 100% !important;
-      height: 100% !important;
-      z-index: 99999 !important;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .material-symbols-outlined {
-      font-size: 24px !important;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 24px;
-    }
-
-    @media (min-width: 640px) { .volume-track { height: 72px; } }
-    @media (min-width: 1024px) { .volume-track { height: 86px; } }
-
-  </style>
-</head>
-
-<body class="bg-background-light dark:bg-background-dark">
-  <div class="relative min-h-screen w-full flex flex-col items-center font-display overflow-hidden">
-    <div class="absolute top-10 left-4 sm:left-10 z-0">
-      <div class="relative opacity-30 dark:opacity-20">
-        <div class="absolute top-0 left-0 love-shape scale-75 rotate-[-15deg]"></div>
-        <div class="absolute top-[-10px] left-[40px] love-shape scale-50 rotate-[20deg]"></div>
+  <body class="bg-background-light dark:bg-background-dark">
+    <div
+      class="relative min-h-screen w-full flex flex-col items-center font-display overflow-hidden"
+    >
+      <div class="absolute top-10 left-4 sm:left-10 z-0">
+        <div class="relative opacity-30 dark:opacity-20">
+          <div
+            class="absolute top-0 left-0 love-shape scale-75 rotate-[-15deg]"
+          ></div>
+          <div
+            class="absolute top-[-10px] left-[40px] love-shape scale-50 rotate-[20deg]"
+          ></div>
+        </div>
       </div>
-    </div>
-    <div class="absolute bottom-10 right-4 sm:right-10 z-0">
-      <div class="relative opacity-30 dark:opacity-20">
-        <div class="absolute bottom-0 right-0 love-shape scale-90 rotate-[15deg]"></div>
-        <div class="absolute bottom-[-10px] right-[-30px] love-shape scale-75 rotate-[-30deg]"></div>
-      </div>
-    </div>
-
-    <div class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 z-10">
-      <div class="text-center mb-8 sm:mb-12">
-        <h1 class="font-serif-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary tracking-tight">NiKi One
-          Year Anniversary</h1>
-        <p class="mt-4 text-lg text-text-light dark:text-text-dark">A special poem, just for you.</p>
-      </div>
-
-      <div class="w-full px-4 mb-12">
-        <div class="relative flex items-center justify-center bg-gray-500/20 bg-cover bg-center aspect-video rounded-lg shadow-xl overflow-hidden">
-          <div id="videoWrap" class="video-wrap w-full h-full" tabindex="0">
-            <video id="videoPlayer" class="w-full h-full object-cover" preload="metadata" playsinline style="display:none;">
-              <source src="./assets/video/test.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-
-            <div id="videoThumbnail" class="video-thumb" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G");'>
-              <button id="centerPlayBtn" class="center-play" aria-label="Play video">
-                <span class="material-symbols-outlined">play_arrow</span>
-              </button>
-            </div>
-
-            <div id="bottomControls" class="absolute inset-x-0 bottom-0 px-4 py-3 bg-gradient-to-t from-black/60 to-transparent video-controls" aria-hidden="true">
-              <div class="flex items-center gap-3">
-                <button id="ctrlPlay" class="flex items-center justify-center w-10 h-10 rounded-full bg-black/40 text-white focus:outline-none hover:bg-black/60 transition">
-                  <span id="ctrlIcon" class="material-symbols-outlined">play_arrow</span>
-                </button>
-
-                <div class="volume-slider-wrapper" id="volumeWrapper" aria-hidden="true">
-                  <div class="volume-track" id="volumeTrack" role="presentation">
-                    <div class="volume-slider-custom" id="volumeThumb" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"></div>
-                  </div>
-                  <input id="volumeSlider" class="volume-slider-vertical" type="range" min="0" max="100" value="100" aria-label="Volume">
-                  <button id="muteBtn" class="flex items-center justify-center w-10 h-10 rounded bg-black/30 text-white hover:bg-black/50 transition">
-                    <span id="muteIcon" class="material-symbols-outlined">volume_up</span>
-                  </button>
-                </div>
-
-                <div id="progressBar" class="relative h-2 w-full bg-white/20 rounded cursor-pointer group">
-                  <div id="progressFilled" class="absolute left-0 top-0 h-full bg-white rounded" style="width:0%"></div>
-                </div>
-
-                <div class="ml-3 text-white text-xs whitespace-nowrap">
-                  <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-                </div>
-
-                <button id="btnFullscreen" class="ml-2 flex items-center justify-center w-10 h-10 rounded bg-black/30 text-white hover:bg-black/50 transition">
-                  <span id="fsIcon" class="material-symbols-outlined">fullscreen</span>
-                </button>
-              </div>
-            </div>
-
-          </div>
+      <div class="absolute bottom-10 right-4 sm:right-10 z-0">
+        <div class="relative opacity-30 dark:opacity-20">
+          <div
+            class="absolute bottom-0 right-0 love-shape scale-90 rotate-[15deg]"
+          ></div>
+          <div
+            class="absolute bottom-[-10px] right-[-30px] love-shape scale-75 rotate-[-30deg]"
+          ></div>
         </div>
       </div>
 
-      <div class="w-full px-4 mb-12">
-        <p class="font-serif-display text-text-light dark:text-text-dark text-lg sm:text-xl font-normal leading-relaxed text-center sm:text-left">
-          To the one who fills my days with laughter and my heart with love, this past year has been the most beautiful
-          chapter of my life. Every moment with you is a cherished memory, a testament to the incredible journey we've
-          embarked on together. This is for you, a small token of my immense love.
-        </p>
-      </div>
+      <div
+        class="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 z-10"
+      >
+        <div class="text-center mb-8 sm:mb-12">
+          <h1
+            class="font-serif-display text-4xl sm:text-5xl md:text-6xl font-bold text-primary tracking-tight"
+          >
+            NiKi One Year Anniversary
+          </h1>
+          <p class="mt-4 text-lg text-text-light dark:text-text-dark">
+            A special poem, just for you.
+          </p>
+        </div>
 
+        <div class="w-full px-4 mb-12">
+          <div
+            class="relative flex items-center justify-center bg-gray-500/20 bg-cover bg-center aspect-video rounded-lg shadow-xl overflow-hidden"
+          >
+            <div id="videoWrap" class="video-wrap w-full h-full" tabindex="0">
+              <video
+                id="videoPlayer"
+                class="w-full h-full object-cover"
+                preload="metadata"
+                playsinline
+                style="display: none"
+              >
+                <source src="./assets/video/test.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+
+              <div
+                id="videoThumbnail"
+                class="video-thumb"
+                style="
+                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G');
+                "
+              >
+                <button
+                  id="centerPlayBtn"
+                  class="center-play"
+                  aria-label="Play video"
+                >
+                  <span class="material-symbols-outlined">play_arrow</span>
+                </button>
+              </div>
+
+              <div
+                id="bottomControls"
+                class="absolute inset-x-0 bottom-0 px-4 py-3 bg-gradient-to-t from-black/60 to-transparent video-controls"
+                aria-hidden="true"
+              >
+                <div class="flex items-center gap-3">
+                  <button
+                    id="ctrlPlay"
+                    class="flex items-center justify-center w-10 h-10 rounded-full bg-black/40 text-white focus:outline-none hover:bg-black/60 transition"
+                  >
+                    <span id="ctrlIcon" class="material-symbols-outlined"
+                      >play_arrow</span
+                    >
+                  </button>
+
+                  <div
+                    class="volume-slider-wrapper"
+                    id="volumeWrapper"
+                    aria-hidden="true"
+                  >
+                    <div
+                      class="volume-track"
+                      id="volumeTrack"
+                      role="presentation"
+                    >
+                      <div
+                        class="volume-slider-custom"
+                        id="volumeThumb"
+                        role="slider"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="100"
+                      ></div>
+                    </div>
+                    <input
+                      id="volumeSlider"
+                      class="volume-slider-vertical"
+                      type="range"
+                      min="0"
+                      max="100"
+                      value="100"
+                      aria-label="Volume"
+                    />
+                    <button
+                      id="muteBtn"
+                      class="flex items-center justify-center w-10 h-10 rounded bg-black/30 text-white hover:bg-black/50 transition"
+                    >
+                      <span id="muteIcon" class="material-symbols-outlined"
+                        >volume_up</span
+                      >
+                    </button>
+                  </div>
+
+                  <div
+                    id="progressBar"
+                    class="relative h-2 w-full bg-white/20 rounded cursor-pointer group"
+                  >
+                    <div
+                      id="progressFilled"
+                      class="absolute left-0 top-0 h-full bg-white rounded"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+
+                  <div class="ml-3 text-white text-xs whitespace-nowrap">
+                    <span id="currentTime">0:00</span> /
+                    <span id="duration">0:00</span>
+                  </div>
+
+                  <button
+                    id="btnFullscreen"
+                    class="ml-2 flex items-center justify-center w-10 h-10 rounded bg-black/30 text-white hover:bg-black/50 transition"
+                  >
+                    <span id="fsIcon" class="material-symbols-outlined"
+                      >fullscreen</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full px-4 mb-12">
+          <p
+            class="font-serif-display text-text-light dark:text-text-dark text-lg sm:text-xl font-normal leading-relaxed text-center sm:text-left"
+          >
+            To the one who fills my days with laughter and my heart with love,
+            this past year has been the most beautiful chapter of my life. Every
+            moment with you is a cherished memory, a testament to the incredible
+            journey we've embarked on together. This is for you, a small token
+            of my immense love.
+          </p>
+        </div>
+
+        <!--     
       <div class="w-full mb-12">
         <div id="marqueeContainer" class="marquee-container">
           <div id="marqueeContent" class="marquee-content">
-            <!-- items will be built by JS -->
+            
           </div>
         </div>
       </div>
-
-      <footer class="flex flex-col gap-6 px-5 py-10 text-center border-t border-primary/20">
-        <p class="text-primary/80 dark:text-primary/70 text-base font-normal leading-normal">With All My Love,
-          Rizki | December, 1st 2025</p>
-      </footer>
+    -->
+        <footer
+          class="flex flex-col gap-6 px-5 py-10 text-center border-t border-primary/20"
+        >
+          <p
+            class="text-primary/80 dark:text-primary/70 text-base font-normal leading-normal"
+          >
+            With All My Love, Rizki | December, 1st 2025
+          </p>
+        </footer>
+      </div>
     </div>
-  </div>
 
-  <script>
-    // ---------- VIDEO PLAYER ----------
-    (function () {
-      const videoPlayer = document.getElementById('videoPlayer');
-      const centerPlayBtn = document.getElementById('centerPlayBtn');
-      const videoThumbnail = document.getElementById('videoThumbnail');
-      const bottomControls = document.getElementById('bottomControls');
-      const ctrlPlay = document.getElementById('ctrlPlay');
-      const ctrlIcon = document.getElementById('ctrlIcon');
-      const progressBar = document.getElementById('progressBar');
-      const progressFilled = document.getElementById('progressFilled');
-      const currentTimeEl = document.getElementById('currentTime');
-      const durationEl = document.getElementById('duration');
+    <script src="./js/func.js"></script>
 
-      const muteBtn = document.getElementById('muteBtn');
-      const muteIcon = document.getElementById('muteIcon');
-      const volumeSlider = document.getElementById('volumeSlider');
-      const volumeWrapper = document.getElementById('volumeWrapper');
-      const volumeTrack = document.getElementById('volumeTrack');
-      const volumeThumb = document.getElementById('volumeThumb');
+    <script>
+      // ---------- MARQUEE: Infinite scroll seamless, dengan foto dempet & roll film di sekeliling ----------
+      // (function () {
+      //   const container = document.getElementById("marqueeContainer");
+      //   const contentEl = document.getElementById("marqueeContent");
 
-      const btnFullscreen = document.getElementById('btnFullscreen');
-      const fsIcon = document.getElementById('fsIcon');
-      const videoWrap = document.getElementById('videoWrap');
+      //   const images = [
+      //     {
+      //       alt: "Couple laughing on a park bench",
+      //       src: "https://lh3.googleusercontent.com/aida-public/AB6AXuALHTymtsKgUWOF05CAaJNKHgVWg5ZloJW8Wkp7kdoKC-fXnwAL-Oz9gVppocQRUncKj228HPa6Dm5cLYR9ApD4iwXnlKCbNX0vRwUEdNgYVBIoBxx623jHOSOdTxHNBHL5VH-aMTFZt7oSmBCiS3FP-FdSnW72l-xb9g458lhYWQ9bnVYt1l-RpguON6rE09uMHrMbZ83apmVnFvTQFgnkqtWXKaXqKmfNnN02RUZUxNR4XhldmWyxOdEmD8My8dHlxdAyTp9_xtBE",
+      //     },
+      //     {
+      //       alt: "Couple sharing an ice cream",
+      //       src: "https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G",
+      //     },
+      //     {
+      //       alt: "Couple holding hands at sunset",
+      //       src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCRTFpoYKV-V6vSBz2u-WLJWU1eioPBhAsuCCmlV0xxI-l0eIYsm0m071gwm4e4cVWZhqx5JGLqFsIFg7MQe1oP2-6nPlnFEYprPwb01TrsSzeaXZDtTWNl_q8CGQRbOCX_cyNr860en5EFDYgYvptec7-Z8LFKUvyhf4phqAs5As6Lphq7vACGv-yJMQaOJntRnhVDSg6Ypl7qAvi07vszK249-NWgrvDkzsSa-aX9VcHx2ElMAUekEjmxcNwoe-LDLwr83UGcMbni",
+      //     },
+      //     {
+      //       alt: "Couple posing with a funny face",
+      //       src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAInIHNRrmiYraU_y8K9-jBAyy6ooyrKD4zkqQFxK229wg28xMrCGRZIYwdJIrQVojtO-1rCNOW8MQFZ6kXZeWpNIevMB2mVx4Ppeq7IYNEvCCIhHxzVEHg9bCk95ABODseTaAdbMxoWYeGUkcMv6CXeLP93sguR3Df_ISIlLYVSX1mUQIq0Jk2SFAjFx-n478q6DxnS6i79V93wFH1hcGykLK76Nuae5urgIYQdH9o1_Hi8ws_YrlBdvdJD_WNU0_VH6kfqD-H9taQ",
+      //     },
+      //     {
+      //       alt: "Couple on a vacation by the sea",
+      //       src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtxKPyOv4IRGQUBq_RyO_JX4qhhlsW4MiJVsOI69RjhFOVv_g2P1dXQ0nyzkO0D67AwujGycfhKWSw3oW50zGjoCPig2HdzO8kbgaL4uyIVQGMBnHySr814lSmkQKOB-fyH1gJI7KoSinW9fBw8ixLZ4KROuhFgzxkWutTCiAnD6j3-SeA0RkYPeDbp-zknm6ZhdTZiNMvyT7bB_NClHLwXC2qcvkgH1aPdwYTlO-RvQZAYMlbx6RKnfVyT0f9c2UR7VGnum1n4bVH",
+      //     },
+      //   ];
 
-      let controlsHideTimeout = null;
-      let volumeHideTimeout = null;
-      let lastVolume = 1;
-      let volumeDragging = false;
-      let pseudoFullscreen = false;
+      //   function buildFrame(img) {
+      //     const wrapper = document.createElement("div");
+      //     wrapper.className = "film-frame";
+      //     wrapper.innerHTML = `
+      //     <div class="film-roll left" aria-hidden="true"></div>
+      //     <div class="marquee-frame" role="img" aria-label="${img.alt}">
+      //       <div class="film-edge top" aria-hidden="true"></div>
+      //       <div class="film-perforation left" aria-hidden="true"></div>
+      //       <div class="film-perforation right" aria-hidden="true"></div>
+      //       <img alt="${img.alt}" src="${img.src}" loading="lazy" />
+      //       <div class="film-edge bottom" aria-hidden="true"></div>
+      //     </div>
+      //     <div class="film-roll right" aria-hidden="true"></div>
+      //   `;
+      //     return wrapper;
+      //   }
 
-      function formatTime(seconds) {
-        const mins = Math.floor(seconds / 60) || 0;
-        const secs = Math.floor(seconds % 60) || 0;
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-      }
+      //   function imagesLoaded(el) {
+      //     const imgs = Array.from(el.querySelectorAll("img"));
+      //     return Promise.all(
+      //       imgs.map((img) => {
+      //         if (img.complete) return Promise.resolve();
+      //         return new Promise((r) => {
+      //           img.addEventListener("load", r, { once: true });
+      //           img.addEventListener("error", r, { once: true });
+      //         });
+      //       })
+      //     );
+      //   }
 
-      videoPlayer.volume = 1;
-      volumeSlider.value = 100;
+      //   let rafId = null;
+      //   let lastTime = performance.now();
+      //   let pos = 0;
+      //   let singleWidth = 0;
+      //   const speed =
+      //     parseFloat(
+      //       getComputedStyle(document.documentElement).getPropertyValue(
+      //         "--marquee-speed-px-per-sec"
+      //       )
+      //     ) || 280;
 
-      function startPlayback() {
-        videoThumbnail.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        showControls();
-        videoPlayer.play().catch(() => {});
-      }
+      //   function buildInfiniteScroll() {
+      //     contentEl.innerHTML = "";
+      //     const itemCount = images.length;
 
-      function showControls() {
-        clearTimeout(controlsHideTimeout);
-        bottomControls.classList.add('visible');
-        bottomControls.setAttribute('aria-hidden', 'false');
-        controlsHideTimeout = setTimeout(() => {
-          hideControls();
-        }, 3000);
-      }
-      
-      function hideControls() {
-        if (volumeDragging) return;
-        bottomControls.classList.remove('visible');
-        bottomControls.setAttribute('aria-hidden', 'true');
-        volumeWrapper.classList.remove('active');
-      }
+      //     for (let rep = 0; rep < 2; rep++) {
+      //       images.forEach((img) => {
+      //         contentEl.appendChild(buildFrame(img));
+      //       });
+      //     }
 
-      centerPlayBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        startPlayback();
-      });
+      //     return imagesLoaded(contentEl).then(() => {
+      //       singleWidth = 0;
+      //       for (let i = 0; i < itemCount; i++) {
+      //         const child = contentEl.children[i];
+      //         singleWidth += child.offsetWidth;
+      //       }
+      //       if (!singleWidth) singleWidth = container.clientWidth;
+      //       pos = 0;
+      //       lastTime = performance.now();
+      //     });
+      //   }
 
-      ['pointermove','mousemove','touchstart','click','keydown'].forEach(evt =>
-        videoWrap.addEventListener(evt, (e) => {
-          showControls();
-        }, { passive: true })
-      );
+      //   function animate(now) {
+      //     const dt = Math.min(0.016, (now - lastTime) / 1000);
+      //     lastTime = now;
 
-      videoWrap.addEventListener('click', (e) => {
-        if (bottomControls.contains(e.target) || videoThumbnail.contains(e.target)) return;
-        if (bottomControls.classList.contains('visible')) {
-          hideControls();
-        } else {
-          showControls();
-        }
-      });
+      //     pos += speed * dt;
 
-      ctrlPlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (videoPlayer.paused) {
-          videoPlayer.play();
-        } else {
-          videoPlayer.pause();
-        }
-      });
+      //     const modPos = pos % singleWidth;
+      //     contentEl.style.transform = `translate3d(${-modPos}px,0,0)`;
 
-      videoPlayer.addEventListener('play', () => { ctrlIcon.textContent = 'pause'; });
-      videoPlayer.addEventListener('pause', () => { ctrlIcon.textContent = 'play_arrow'; });
+      //     rafId = requestAnimationFrame(animate);
+      //   }
 
-      videoPlayer.addEventListener('loadedmetadata', () => {
-        durationEl.textContent = formatTime(videoPlayer.duration || 0);
-        const vol = videoPlayer.volume;
-        volumeSlider.value = vol * 100;
-        lastVolume = vol;
-        updateVolumeThumbPosition();
-        updateMuteIcon();
-      });
+      //   let resizeTimer = null;
+      //   function onResize() {
+      //     clearTimeout(resizeTimer);
+      //     cancelAnimationFrame(rafId);
+      //     resizeTimer = setTimeout(() => {
+      //       buildInfiniteScroll().then(() => {
+      //         lastTime = performance.now();
+      //         rafId = requestAnimationFrame(animate);
+      //       });
+      //     }, 150);
+      //   }
 
-      videoPlayer.addEventListener('timeupdate', () => {
-        const cur = videoPlayer.currentTime || 0;
-        const dur = videoPlayer.duration || 0;
-        currentTimeEl.textContent = formatTime(cur);
-        const pct = dur ? (cur / dur) * 100 : 0;
-        progressFilled.style.width = pct + '%';
-      });
-
-      progressBar.addEventListener('click', (ev) => {
-        const rect = progressBar.getBoundingClientRect();
-        const pct = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
-        const dur = videoPlayer.duration || 0;
-        videoPlayer.currentTime = dur * pct;
-      });
-
-      let dragging = false;
-      progressBar.addEventListener('pointerdown', (ev) => {
-        dragging = true;
-        progressBar.setPointerCapture(ev.pointerId);
-      });
-      progressBar.addEventListener('pointermove', (ev) => {
-        if (!dragging) return;
-        const rect = progressBar.getBoundingClientRect();
-        const pct = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
-        progressFilled.style.width = (pct * 100) + '%';
-        currentTimeEl.textContent = formatTime((videoPlayer.duration || 0) * pct);
-      });
-      progressBar.addEventListener('pointerup', (ev) => {
-        if (!dragging) return;
-        dragging = false;
-        const rect = progressBar.getBoundingClientRect();
-        const pct = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
-        videoPlayer.currentTime = (videoPlayer.duration || 0) * pct;
-        progressBar.releasePointerCapture(ev.pointerId);
-      });
-
-      videoThumbnail.addEventListener('click', () => startPlayback());
-
-      function updateMuteIcon() {
-        if (videoPlayer.volume === 0) {
-          muteIcon.textContent = 'volume_mute';
-        } else if (videoPlayer.volume < 0.5) {
-          muteIcon.textContent = 'volume_down';
-        } else {
-          muteIcon.textContent = 'volume_up';
-        }
-        volumeThumb.setAttribute('aria-valuenow', Math.round(videoPlayer.volume * 100));
-      }
-
-      function updateVolumeThumbPosition() {
-        const vol = parseFloat(volumeSlider.value) / 100;
-        const trackHeight = volumeTrack.offsetHeight || 50;
-        const topPos = trackHeight * (1 - vol);
-        volumeThumb.style.top = topPos + 'px';
-        volumeThumb.setAttribute('aria-valuenow', Math.round(vol * 100));
-      }
-
-      function scheduleVolumeHide() {
-        clearTimeout(volumeHideTimeout);
-        volumeHideTimeout = setTimeout(() => {
-          volumeWrapper.classList.remove('active');
-          scheduleControlsHide();
-        }, 1200);
-      }
-
-      function scheduleControlsHide() {
-        clearTimeout(controlsHideTimeout);
-        controlsHideTimeout = setTimeout(() => {
-          hideControls();
-        }, 1800);
-      }
-
-      muteBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (videoPlayer.volume === 0) {
-          const restore = lastVolume > 0 ? lastVolume : 0.5;
-          videoPlayer.volume = restore;
-          volumeSlider.value = restore * 100;
-        } else {
-          lastVolume = videoPlayer.volume;
-          videoPlayer.volume = 0;
-          volumeSlider.value = 0;
-        }
-        updateVolumeThumbPosition();
-        updateMuteIcon();
-        showControls();
-      });
-
-      muteBtn.addEventListener('mouseenter', () => {
-        clearTimeout(volumeHideTimeout);
-        volumeWrapper.classList.add('active');
-        showControls();
-      });
-      muteBtn.addEventListener('mouseleave', () => {
-        if (!volumeDragging) scheduleVolumeHide();
-      });
-      muteBtn.addEventListener('touchstart', (e) => {
-        e.stopPropagation();
-        clearTimeout(volumeHideTimeout);
-        volumeWrapper.classList.add('active');
-        showControls();
-      }, { passive: true });
-      document.addEventListener('touchend', () => { if (!volumeDragging) scheduleVolumeHide(); });
-
-      volumeWrapper.addEventListener('mouseenter', () => {
-        clearTimeout(volumeHideTimeout);
-        showControls();
-      });
-      volumeWrapper.addEventListener('mouseleave', () => {
-        if (!volumeDragging) scheduleVolumeHide();
-      });
-
-      volumeThumb.addEventListener('pointerdown', (ev) => {
-        ev.stopPropagation();
-        volumeDragging = true;
-        clearTimeout(volumeHideTimeout);
-        volumeThumb.setPointerCapture(ev.pointerId);
-        showControls();
-      });
-
-      document.addEventListener('pointermove', (ev) => {
-        if (!volumeDragging) return;
-        const trackRect = volumeTrack.getBoundingClientRect();
-        const y = ev.clientY - trackRect.top;
-        const trackHeight = trackRect.height;
-        const constrainedY = Math.max(0, Math.min(trackHeight, y));
-        const vol = Math.max(0, Math.min(1, (trackHeight - constrainedY) / trackHeight));
-        videoPlayer.volume = vol;
-        volumeSlider.value = vol * 100;
-        const topPos = trackHeight * (1 - vol);
-        volumeThumb.style.top = topPos + 'px';
-        if (vol > 0) lastVolume = vol;
-        updateMuteIcon();
-        showControls();
-      }, { passive: true });
-
-      document.addEventListener('pointerup', (ev) => {
-        if (!volumeDragging) return;
-        volumeDragging = false;
-        volumeThumb.releasePointerCapture(ev.pointerId);
-        scheduleVolumeHide();
-      });
-
-      volumeTrack.addEventListener('click', (ev) => {
-        ev.stopPropagation();
-        const trackRect = volumeTrack.getBoundingClientRect();
-        const y = ev.clientY - trackRect.top;
-        const trackHeight = trackRect.height;
-        const constrainedY = Math.max(0, Math.min(trackHeight, y));
-        const vol = Math.max(0, Math.min(1, (trackHeight - constrainedY) / trackHeight));
-        videoPlayer.volume = vol;
-        volumeSlider.value = vol * 100;
-        const topPos = trackHeight * (1 - vol);
-        volumeThumb.style.top = topPos + 'px';
-        if (vol > 0) lastVolume = vol;
-        updateMuteIcon();
-        showControls();
-        scheduleVolumeHide();
-      });
-
-      volumeSlider.addEventListener('input', (e) => {
-        const v = parseFloat(e.target.value) / 100;
-        videoPlayer.volume = v;
-        if (v > 0) lastVolume = v;
-        updateVolumeThumbPosition();
-        updateMuteIcon();
-      });
-
-      function isFullscreen() {
-        return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
-      }
-
-      async function enterFullscreen(el) {
-        try {
-          if (el.requestFullscreen) await el.requestFullscreen();
-          else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
-          else if (el.mozRequestFullScreen) await el.mozRequestFullScreen();
-          else if (el.msRequestFullscreen) await el.msRequestFullscreen();
-          pseudoFullscreen = false;
-          applyFullscreenStyles(true);
-          return;
-        } catch (err) {}
-        videoWrap.classList.add('fs-fallback');
-        pseudoFullscreen = true;
-        applyFullscreenStyles(true);
-      }
-
-      async function exitFullscreen() {
-        try {
-          if (document.exitFullscreen) await document.exitFullscreen();
-          else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
-          else if (document.mozCancelFullScreen) await document.mozCancelFullScreen();
-          else if (document.msExitFullscreen) await document.msExitFullscreen();
-          pseudoFullscreen = false;
-          applyFullscreenStyles(false);
-          return;
-        } catch (err) {}
-        videoWrap.classList.remove('fs-fallback');
-        pseudoFullscreen = false;
-        applyFullscreenStyles(false);
-      }
-
-      function applyFullscreenStyles(enter) {
-        if (enter) {
-          videoPlayer.classList.remove('object-cover');
-          videoPlayer.classList.add('object-contain');
-          fsIcon.textContent = 'fullscreen_exit';
-          showControls();
-        } else {
-          videoPlayer.classList.remove('object-contain');
-          videoPlayer.classList.add('object-cover');
-          fsIcon.textContent = 'fullscreen';
-          showControls();
-          scheduleControlsHide();
-        }
-      }
-
-      btnFullscreen.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        if (isFullscreen() || pseudoFullscreen) {
-          await exitFullscreen();
-        } else {
-          await enterFullscreen(videoWrap || document.documentElement);
-        }
-      });
-
-      ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(ev =>
-        document.addEventListener(ev, () => {
-          const inFs = isFullscreen();
-          applyFullscreenStyles(inFs);
-        })
-      );
-
-      videoPlayer.addEventListener('play', () => {
-        showControls();
-        scheduleControlsHide();
-      });
-
-      videoPlayer.addEventListener('ended', () => {
-        videoPlayer.style.display = 'none';
-        videoThumbnail.style.display = 'flex';
-        bottomControls.classList.remove('visible');
-        bottomControls.setAttribute('aria-hidden', 'true');
-        videoPlayer.currentTime = 0;
-      });
-
-      videoWrap.addEventListener('keydown', (e) => {
-        if (e.key === ' ' || e.key === 'Spacebar') {
-          e.preventDefault();
-          if (videoPlayer.paused) videoPlayer.play(); else videoPlayer.pause();
-        } else if (e.key.toLowerCase() === 'f') {
-          btnFullscreen.click();
-        } else if (e.key.toLowerCase() === 'm') {
-          muteBtn.click();
-        }
-        showControls();
-      });
-
-      window.addEventListener('load', () => {
-        updateVolumeThumbPosition();
-        updateMuteIcon();
-      });
-
-    })();
-  </script>
-
-  <script>
-    // ---------- MARQUEE: Infinite scroll seamless, dengan foto dempet & roll film di sekeliling ----------
-    (function () {
-      const container = document.getElementById('marqueeContainer');
-      const contentEl = document.getElementById('marqueeContent');
-
-      const images = [
-        {
-          alt: "Couple laughing on a park bench",
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuALHTymtsKgUWOF05CAaJNKHgVWg5ZloJW8Wkp7kdoKC-fXnwAL-Oz9gVppocQRUncKj228HPa6Dm5cLYR9ApD4iwXnlKCbNX0vRwUEdNgYVBIoBxx623jHOSOdTxHNBHL5VH-aMTFZt7oSmBCiS3FP-FdSnW72l-xb9g458lhYWQ9bnVYt1l-RpguON6rE09uMHrMbZ83apmVnFvTQFgnkqtWXKaXqKmfNnN02RUZUxNR4XhldmWyxOdEmD8My8dHlxdAyTp9_xtBE"
-        },
-        {
-          alt: "Couple sharing an ice cream",
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuASt0PioP6NNo8DsQjoHk1e6aGLM53jnPmP-Y6ASN-YADRubCrGa-Pg0vkox_MJ77CVi8lCZ6KB1RfiVSznEnqDzn6M0wYTW71EKauDhq3svPhiUgOGyhZlIzqWzKKeWUI18znQgUnABBGKJD6sCgh9mruI4YY4Awq2ug8y4B_GupIF_kxwxnWTruQXAjjuCtaO78F69bnuxEwfmS_beaS8FEG29SliJBCE87FsyFNYZtWRMH2z7A6YW_rBnLuC-frxvFGrrgFqCf2G"
-        },
-        {
-          alt: "Couple holding hands at sunset",
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuCRTFpoYKV-V6vSBz2u-WLJWU1eioPBhAsuCCmlV0xxI-l0eIYsm0m071gwm4e4cVWZhqx5JGLqFsIFg7MQe1oP2-6nPlnFEYprPwb01TrsSzeaXZDtTWNl_q8CGQRbOCX_cyNr860en5EFDYgYvptec7-Z8LFKUvyhf4phqAs5As6Lphq7vACGv-yJMQaOJntRnhVDSg6Ypl7qAvi07vszK249-NWgrvDkzsSa-aX9VcHx2ElMAUekEjmxcNwoe-LDLwr83UGcMbni"
-        },
-        {
-          alt: "Couple posing with a funny face",
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAInIHNRrmiYraU_y8K9-jBAyy6ooyrKD4zkqQFxK229wg28xMrCGRZIYwdJIrQVojtO-1rCNOW8MQFZ6kXZeWpNIevMB2mVx4Ppeq7IYNEvCCIhHxzVEHg9bCk95ABODseTaAdbMxoWYeGUkcMv6CXeLP93sguR3Df_ISIlLYVSX1mUQIq0Jk2SFAjFx-n478q6DxnS6i79V93wFH1hcGykLK76Nuae5urgIYQdH9o1_Hi8ws_YrlBdvdJD_WNU0_VH6kfqD-H9taQ"
-        },
-        {
-          alt: "Couple on a vacation by the sea",
-          src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDtxKPyOv4IRGQUBq_RyO_JX4qhhlsW4MiJVsOI69RjhFOVv_g2P1dXQ0nyzkO0D67AwujGycfhKWSw3oW50zGjoCPig2HdzO8kbgaL4uyIVQGMBnHySr814lSmkQKOB-fyH1gJI7KoSinW9fBw8ixLZ4KROuhFgzxkWutTCiAnD6j3-SeA0RkYPeDbp-zknm6ZhdTZiNMvyT7bB_NClHLwXC2qcvkgH1aPdwYTlO-RvQZAYMlbx6RKnfVyT0f9c2UR7VGnum1n4bVH"
-        }
-      ];
-
-      function buildFrame(img) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'film-frame';
-        wrapper.innerHTML = `
-          <div class="film-roll left" aria-hidden="true"></div>
-          <div class="marquee-frame" role="img" aria-label="${img.alt}">
-            <div class="film-edge top" aria-hidden="true"></div>
-            <div class="film-perforation left" aria-hidden="true"></div>
-            <div class="film-perforation right" aria-hidden="true"></div>
-            <img alt="${img.alt}" src="${img.src}" loading="lazy" />
-            <div class="film-edge bottom" aria-hidden="true"></div>
-          </div>
-          <div class="film-roll right" aria-hidden="true"></div>
-        `;
-        return wrapper;
-      }
-
-      function imagesLoaded(el) {
-        const imgs = Array.from(el.querySelectorAll('img'));
-        return Promise.all(imgs.map(img => {
-          if (img.complete) return Promise.resolve();
-          return new Promise(r => { img.addEventListener('load', r, { once: true }); img.addEventListener('error', r, { once: true }); });
-        }));
-      }
-
-      let rafId = null;
-      let lastTime = performance.now();
-      let pos = 0;
-      let singleWidth = 0;
-      const speed = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--marquee-speed-px-per-sec')) || 280;
-
-      function buildInfiniteScroll() {
-        contentEl.innerHTML = '';
-        const itemCount = images.length;
-
-        for (let rep = 0; rep < 2; rep++) {
-          images.forEach(img => {
-            contentEl.appendChild(buildFrame(img));
-          });
-        }
-
-        return imagesLoaded(contentEl).then(() => {
-          singleWidth = 0;
-          for (let i = 0; i < itemCount; i++) {
-            const child = contentEl.children[i];
-            singleWidth += child.offsetWidth;
-          }
-          if (!singleWidth) singleWidth = container.clientWidth;
-          pos = 0;
-          lastTime = performance.now();
-        });
-      }
-
-      function animate(now) {
-        const dt = Math.min(0.016, (now - lastTime) / 1000);
-        lastTime = now;
-
-        pos += speed * dt;
-
-        const modPos = pos % singleWidth;
-        contentEl.style.transform = `translate3d(${-modPos}px,0,0)`;
-
-        rafId = requestAnimationFrame(animate);
-      }
-
-      let resizeTimer = null;
-      function onResize() {
-        clearTimeout(resizeTimer);
-        cancelAnimationFrame(rafId);
-        resizeTimer = setTimeout(() => {
-          buildInfiniteScroll().then(() => {
-            lastTime = performance.now();
-            rafId = requestAnimationFrame(animate);
-          });
-        }, 150);
-      }
-
-      buildInfiniteScroll().then(() => {
-        lastTime = performance.now();
-        rafId = requestAnimationFrame(animate);
-        window.addEventListener('resize', onResize, { passive: true });
-        document.addEventListener('visibilitychange', () => {
-          if (document.hidden) {
-            cancelAnimationFrame(rafId);
-          } else {
-            lastTime = performance.now();
-            rafId = requestAnimationFrame(animate);
-          }
-        });
-      }).catch(err => {
-        console.error('marquee init failed', err);
-      });
-
-    })();
-  </script>
-</body>
-
+      //   buildInfiniteScroll()
+      //     .then(() => {
+      //       lastTime = performance.now();
+      //       rafId = requestAnimationFrame(animate);
+      //       window.addEventListener("resize", onResize, { passive: true });
+      //       document.addEventListener("visibilitychange", () => {
+      //         if (document.hidden) {
+      //           cancelAnimationFrame(rafId);
+      //         } else {
+      //           lastTime = performance.now();
+      //           rafId = requestAnimationFrame(animate);
+      //         }
+      //       });
+      //     })
+      //     .catch((err) => {
+      //       console.error("marquee init failed", err);
+      //     });
+      // })();
+    </script>
+  </body>
 </html>
